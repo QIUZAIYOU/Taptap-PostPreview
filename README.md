@@ -2,6 +2,10 @@
 
 TapTap游戏社区列表页贴子卡片新增预览按钮，可在列表页直接预览贴子内容。
 
+适用于浏览器插件 Tampermonkey 及 Violentmonkey 等用户脚本管理器。
+
+可在脚本托管网站[GreasyFork](https://greasyfork.org/zh-CN/scripts/402945-%E6%B8%B8%E6%88%8F%E7%A4%BE%E5%8C%BA-taptap-%E5%88%97%E8%A1%A8%E9%A1%B5%E8%B4%B4%E5%AD%90%E9%A2%84%E8%A7%88)上安装使用。
+
 v1.2.7 - 修复预览界面点击右侧上方【进入贴子】按钮不生效且预览被错误关闭的问题。
 
 v1.2.6 - 暂时取消【video 视频】和【moment 动态】类贴子预览，并在贴子上显示类型。
