@@ -6,7 +6,7 @@ TapTap游戏社区列表页贴子卡片新增预览按钮，可在列表页直�
 
 可在脚本托管网站[GreasyFork](https://greasyfork.org/zh-CN/scripts/402945-%E6%B8%B8%E6%88%8F%E7%A4%BE%E5%8C%BA-taptap-%E5%88%97%E8%A1%A8%E9%A1%B5%E8%B4%B4%E5%AD%90%E9%A2%84%E8%A7%88)上安装使用。
 
-因TapTap更新本脚本旧版本已废
+因TapTap更新，本脚本旧版本已废
 
 新版本因 Taptap 目前为滚动加载数据，因此只对最先加载的前几项生效，正在寻找解决办法。
 
