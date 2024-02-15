@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name         TapTap贴子预览
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
-// @match        https://www.taptap.cn/app/*/topic
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=taptap.cn
-// @require      https://scriptcat.org/lib/513/2.0.0/ElementGetter.js
-// @grant        GM_addStyle
+// @name            游戏社区(TapTap)列表页贴子预览
+// @namespace       https://github.com/QIUZAIYOU/Taptap-PostPreview
+// @version         0.1
+// @description     TapTap游戏社区列表页贴子（除图片和视频贴）卡片新增预览按钮，可在列表页直接预览贴子内容。
+// @author          QIUZAIYOU
+// @match           https://www.taptap.cn/app/*/topic
+// @icon            https://www.google.com/s2/favicons?sz=64&domain=taptap.cn
+// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js
+// @grant           GM_addStyle
 // ==/UserScript==
 
 (function () {
