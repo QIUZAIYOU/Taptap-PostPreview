@@ -15,10 +15,11 @@
     const selecter = {
         momentCardFooter: '.moment-card__footer',
         previewWrapper: '#previewWrapper',
-        previewIframe: '#previewIframe'
+        previewIframe: '#previewIframe',
+        previewIframeMask: '#previewIframeMask'
     }
     const styles = {
-        PreviewWrapperStyle: '#previewWrapper{position:fixed;top:50%;left:50%;box-sizing:border-box;width:600px;height:97vh;border:2px solid #00d9c5;border-radius:10px;background:#191919;transform:translate(-50%,-50%);overflow:hidden}#previewWrapper::backdrop{backdrop-filter:blur(3px)}#previewIframe{width:100%;height:100%;border:none;background:#191919}',
+        PreviewWrapperStyle: '#previewWrapper{position:fixed;top:50%;left:50%;box-sizing:border-box;width:600px;height:97vh;border:2px solid #00d9c5;border-radius:10px;background:#191919;transform:translate(-50%,-50%);overflow:hidden}#previewWrapper::backdrop{backdrop-filter:blur(3px)}#previewIframe{width:100%;height:100%;border:none;background:#191919}#previewIframeMask{position:absolute;display:block;background:#191919;inset:0}',
         PreviewIframeStyle: 'body{background:#191919!important}header{display:none!important}main{margin-left:0!important}'
     }
     const utils = {
@@ -61,7 +62,7 @@
         insertPreviewElementToDocument() {
             const previewWrapper = document.getElementById('previewWrapper')
             if (previewWrapper) return previewWrapper
-            return utils.createElementAndInsert(`<div id="previewWrapper" popover><iframe id="previewIframe" hspace="-80"></iframe></div>`, document.body, 'append')
+            return utils.createElementAndInsert(`<div id="previewWrapper" popover><div id="previewIframeMask"></div><iframe id="previewIframe" title="previewIframe"></iframe></div>`, document.body, 'append')
         },
         async insertPreviewButtonToMomentCard() {
             const previewButtonHtml = `
@@ -71,21 +72,28 @@
                 </svg>
             </span>
             `
-            const [previewWrapper, previewIframe] = await elmGetter.get([selecter.previewWrapper, selecter.previewIframe])
-            const previewIframeWindow = previewIframe.contentWindow
-            previewIframe.addEventListener('load', () => {
+            const [$previewWrapper, $previewIframe, $previewIframeMask] = await elmGetter.get([selecter.previewWrapper, selecter.previewIframe, selecter.previewIframeMask])
+            const previewIframeWindow = $previewIframe.contentWindow
+            $previewWrapper.addEventListener('toggle', (event) => {
+                if (event.newState === 'closed') {
+                    $previewIframe.src = ''
+                    $previewIframeMask.style.display = 'block'
+                }
+            })
+            $previewIframe.addEventListener('load', () => {
                 const iframeInnerStyleElement = previewIframeWindow.document.createElement('style')
                 iframeInnerStyleElement.innerHTML = styles.PreviewIframeStyle
                 iframeInnerStyleElement.id = 'PreviewIframeStyle'
                 previewIframeWindow.document.head.append(iframeInnerStyleElement)
+                $previewIframeMask.style.display = 'none'
             })
             elmGetter.each(selecter.momentCardFooter, (momentCardFooter) => {
                 const previewButton = utils.createElementAndInsert(previewButtonHtml, momentCardFooter, 'append')
                 previewButton.addEventListener('click', (event) => {
                     event.preventDefault()
                     event.stopPropagation()
-                    previewWrapper.showPopover()
-                    previewIframe.src = momentCardFooter.parentElement.querySelector('a[href*="moment"]').href
+                    $previewWrapper.showPopover()
+                    $previewIframe.src = momentCardFooter.parentElement.querySelector('a[href*="moment"]').href
                 })
             })
         }
