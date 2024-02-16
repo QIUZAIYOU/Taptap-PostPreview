@@ -6,7 +6,7 @@
 // @author          QIAN
 // @match           *://www.taptap.cn/app/*/topic*
 // @grant           GM_addStyle
-// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js
+// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js#sha256=KbLWud5OMbbXZHRoU/GLVgvIgeosObRYkDEbE/YanRU=
 // ==/UserScript==
 (function () {
     'use strict';
