@@ -1,25 +1,27 @@
 // ==UserScript==
 // @name            游戏社区(TapTap)列表页贴子预览
 // @namespace       https://github.com/QIUZAIYOU/Taptap-PostPreview
-// @version         0.1
+// @version         1.3.0
 // @description     TapTap游戏社区列表页贴子（除图片和视频贴）卡片新增预览按钮，可在列表页直接预览贴子内容。
-// @author          QIUZAIYOU
-// @match           https://www.taptap.cn/app/*/topic
-// @icon            https://www.google.com/s2/favicons?sz=64&domain=taptap.cn
-// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js
+// @author          QIAN
+// @match           *://www.taptap.com/app*
+// @match           *://www.taptap.com/forum/hot
 // @grant           GM_addStyle
+// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js#sha256=KbLWud5OMbbXZHRoU/GLVgvIgeosObRYkDEbE/YanRU=
 // ==/UserScript==
-
 (function () {
     'use strict';
     const selecter = {
+        tap: '#tap',
         momentCardFooter: '.moment-card__footer',
         previewWrapper: '#previewWrapper',
         previewIframe: '#previewIframe',
-        previewIframeMask: '#previewIframeMask'
+        previewIframeMask: '#previewIframeMask',
+        previewContentHeader: 'header',
+        previewContentMain: 'main'
     }
     const styles = {
-        PreviewWrapperStyle: '#previewWrapper{position:fixed;top:50%;left:50%;box-sizing:border-box;width:600px;height:97vh;border:2px solid #00d9c5;border-radius:10px;background:#191919;transform:translate(-50%,-50%);overflow:hidden}#previewWrapper::backdrop{backdrop-filter:blur(3px)}#previewIframe{width:100%;height:100%;border:none;background:#191919}#previewIframeMask{position:absolute;display:block;background:#191919;inset:0}',
+        PreviewWrapperStyle: '#previewWrapper{position:fixed;top:50%;left:50%;overflow:hidden;box-sizing:border-box;width:600px;height:97vh;border:2px solid #00d9c5;border-radius:10px;background:#191919;transform:translate(-50%,-50%)}#previewWrapper::backdrop{backdrop-filter:blur(3px)}#previewIframe{width:100%;height:100%;border:none;background:#191919}#previewIframeMask{position:absolute;display:flex;background:#191919;inset:0;align-items:center;justify-content:center}',
         PreviewIframeStyle: 'body{background:#191919!important}header{display:none!important}main{margin-left:0!important}'
     }
     const utils = {
@@ -60,15 +62,32 @@
     }
     const modules = {
         insertPreviewElementToDocument() {
+            const previewElementHtml = `
+                <div id="previewWrapper" popover>
+                    <div id="perviewFloat">
+                        <div id="previewClose"></div>
+                        <div id="previewEnterPost"><a href=""></a></div>
+                    </div>
+                    <div id="previewIframeMask">
+                        <div class="loading-dots__wrapper" type="dots" loading="true">
+                            <span class="loading-dots__dot" style="font-size: 6px;"></span>
+                            <span class="loading-dots__dot" style="font-size: 6px;"></span>
+                            <span class="loading-dots__dot" style="font-size: 6px;"></span>
+                        </div>
+                    </div>
+                    <iframe id="previewIframe" title="previewIframe"></iframe>
+                </div>
+            `
             const previewWrapper = document.getElementById('previewWrapper')
             if (previewWrapper) return previewWrapper
-            return utils.createElementAndInsert(`<div id="previewWrapper" popover><div id="previewIframeMask"></div><iframe id="previewIframe" title="previewIframe"></iframe></div>`, document.body, 'append')
+            return utils.createElementAndInsert(previewElementHtml, document.body, 'append')
         },
         async insertPreviewButtonToMomentCard() {
             const previewButtonHtml = `
             <span class="icon-button flex-center--y moment-card_repost--btn moment-card__footer-btn" data-booth-item="" data-track-prevent="click" data-booth-level="1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="icon" viewBox="0 0 1024 1024">
-                    <path fill="#98999e" d="M480.384 319.872c-123.712 0-224 100.288-224 224s100.288 224 224 224 224-100.288 224-224-100.288-224-224-224zm0 384c-88.384 0-160-71.616-160-160s71.616-160 160-160 160 71.616 160 160-71.616 160-160 160zm443.712-272.576C815.744 284.8 657.152 192.192 480.064 192.192S144.448 284.8 36.096 431.296c-47.872 64.704-47.872 160.832 0 225.472C144.448 803.264 303.04 895.872 480.128 895.872s335.616-92.608 444.032-239.104c47.808-64.64 47.808-160.768-.064-225.472zm-48.128 172.416C775.488 748.736 630.784 832 478.976 832c-151.68 0-296.384-83.264-396.928-228.224-23.936-34.56-23.936-84.736 0-119.296 100.544-145.088 245.248-228.224 396.928-228.224 151.808 0 296.512 83.2 396.992 228.224 23.936 34.496 23.936 84.736 0 119.232z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" class="icon" viewBox="0 0 1395 1024">
+                    <path fill="#98999e" d="M698.098 1023.954c-249.238 0-477.245-153.882-680.697-455.598a106.157 106.157 0 0 1 0-115.804C220.853 153.882 448.767 0 698.098 0s477.245 153.882 680.697 455.598a106.157 106.157 0 0 1 0 115.804c-203.637 298.67-431.459 452.552-680.697 452.552zm0-920.382c-212.637 0-412.997 138.466-596.556 409.905C286.624 784.731 487.03 923.382 698.098 923.382s412.997-138.466 596.556-409.905C1110.91 240.746 910.412 103.618 698.098 103.618z" />
+                    <path fill="#98999e" d="M697.913 717.714a204.19 204.19 0 1 1 204.976-204.19 204.606 204.606 0 0 1-204.976 204.19zm0-307.81A102.095 102.095 0 1 0 800.424 512a102.28 102.28 0 0 0-102.51-102.095z" />
                 </svg>
             </span>
             `
@@ -77,15 +96,17 @@
             $previewWrapper.addEventListener('toggle', (event) => {
                 if (event.newState === 'closed') {
                     $previewIframe.src = ''
-                    $previewIframeMask.style.display = 'block'
+                    $previewIframeMask.style.display = 'flex'
+                    document.querySelector(selecter.tap).style.pointerEvents = 'auto'
                 }
             })
-            $previewIframe.addEventListener('load', () => {
-                const iframeInnerStyleElement = previewIframeWindow.document.createElement('style')
-                iframeInnerStyleElement.innerHTML = styles.PreviewIframeStyle
-                iframeInnerStyleElement.id = 'PreviewIframeStyle'
-                previewIframeWindow.document.head.append(iframeInnerStyleElement)
-                $previewIframeMask.style.display = 'none'
+            $previewIframe.addEventListener('load', async () => {
+                const [$previewContentHeader, $previewContentMain] = await elmGetter.get([selecter.previewContentHeader, selecter.previewContentMain], previewIframeWindow.document)
+                if ($previewContentHeader && $previewContentMain) {
+                    $previewContentHeader.style.display = 'none'
+                    $previewContentMain.style.marginLeft = '0'
+                    $previewIframeMask.style.display = 'none'
+                }
             })
             elmGetter.each(selecter.momentCardFooter, (momentCardFooter) => {
                 const previewButton = utils.createElementAndInsert(previewButtonHtml, momentCardFooter, 'append')
@@ -94,6 +115,7 @@
                     event.stopPropagation()
                     $previewWrapper.showPopover()
                     $previewIframe.src = momentCardFooter.parentElement.querySelector('a[href*="moment"]').href
+                    document.querySelector(selecter.tap).style.pointerEvents = 'none'
                 })
             })
         }
