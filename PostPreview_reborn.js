@@ -7,6 +7,9 @@
 // @match           *://www.taptap.cn/app/*/topic*
 // @grant           GM_addStyle
 // @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js#sha256=KbLWud5OMbbXZHRoU/GLVgvIgeosObRYkDEbE/YanRU=
+// @supportURL      https://github.com/QIUZAIYOU/Taptap-PostPreview
+// @homepageURL     https://github.com/QIUZAIYOU/Taptap-PostPreview
+// @icon            https://assets.tapimg.com/cupid-apps/web-app/favicon.2.ico
 // ==/UserScript==
 (function () {
     'use strict';
