@@ -4,10 +4,9 @@
 // @version         1.3.0
 // @description     TapTap游戏社区列表页贴子（除图片和视频贴）卡片新增预览按钮，可在列表页直接预览贴子内容。
 // @author          QIAN
-// @match           *://www.taptap.com/app*
-// @match           *://www.taptap.com/forum/hot
+// @match           *://www.taptap.cn/app/*/topic*
 // @grant           GM_addStyle
-// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js#sha256=KbLWud5OMbbXZHRoU/GLVgvIgeosObRYkDEbE/YanRU=
+// @require         https://scriptcat.org/lib/513/2.0.0/ElementGetter.js
 // ==/UserScript==
 (function () {
     'use strict';
