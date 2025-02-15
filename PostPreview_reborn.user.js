@@ -8,11 +8,12 @@
 // @match           *://www.taptap.cn/app/*/topic*
 // @grant           GM_addStyle
 // @grant           GM_info
-// @require         https://scriptcat.org/lib/513/2.0.1/ElementGetter.js
+// @require         https://scriptcat.org/lib/513/2.0.1/ElementGetter.js?#sha256=V0EUYIfbOrr63nT8+W7BP1xEmWcumTLWu2PXFJHh5dg=
 // @supportURL      https://github.com/QIUZAIYOU/Taptap-PostPreview
 // @homepageURL     https://github.com/QIUZAIYOU/Taptap-PostPreview
 // @icon            https://assets.tapimg.com/cupid-apps/web-app/favicon.2.ico
 // ==/UserScript==
+// ?#sha256=V0EUYIfbOrr63nT8+W7BP1xEmWcumTLWu2PXFJHh5dg=
 (function () {
     'use strict';
     const selector = {
