@@ -3,7 +3,7 @@
 // @namespace       游戏社区(TapTap)列表页贴子预览
 // @license         GPL-3.0 License
 // @version         1.3.3
-// @description     TapTap游戏社区列表页贴子（除图片和视频贴）卡片新增预览按钮，可在列表页直接预览贴子内容。
+// @description     TapTap游戏社区列表页贴子卡片新增预览按钮，可在列表页直接预览贴子内容。
 // @author          QIAN
 // @match           *://www.taptap.cn/app/*/topic*
 // @grant           GM_addStyle
@@ -190,13 +190,13 @@
                     }
                 }
                 const tapElement = document.querySelector(selector.tap);
-                const momentLink = momentCardFooter.parentElement.querySelector('a[href*="moment"]');
-
+                const momentId = momentCardFooter.parentElement.dataset.eventObjKey.split(":")[1]
+                const momentLink = `https://www.taptap.cn/moment/${momentId}`;
                 previewButton.addEventListener('click', (event) => {
                     event.preventDefault();
                     event.stopPropagation();
                     previewWrapper.showPopover();
-                    previewIframe.src = momentLink.href;
+                    previewIframe.src = momentLink;
                     tapElement.style.pointerEvents = 'none';
                 });
             });
